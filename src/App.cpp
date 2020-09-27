@@ -315,11 +315,11 @@ void App::printHelp()
 
     std::cout << "\nOBJ file browser with texture (format DDS or bmp) and Perlin Noise\n\n";
     std::cout << "Navigation:\n";
-    std::cout << "Use mouse or arrows to rotate object.\n";
-    std::cout << "Use mouse scroll or Z/X buttons to zoom in/out.\n";
+    std::cout << "Use your mouse or the arrows to rotate the object.\n";
+    std::cout << "Use mouse scroll or the Z/X buttons to zoom in/out.\n";
     std::cout << "T - turn on texture mode (texture is applied to the object)\n";
-    std::cout << "G - turn on Perlin Noise mode\n";
-    std::cout << "B - turn on mixed mode (texture and Perlin Noise are applied together)\n\n";
+    std::cout << "G - turn on Perlin Noise mode (Perlin Noise is applied to the object, texture is turned off)\n";
+    std::cout << "B - turn on mixed mode (texture and Perlin Noise are applied simultaneously)\n\n";
     
     std::cout << "Light navigation:\n";
     std::cout << "F - toggle lightning\n";
@@ -339,7 +339,7 @@ void App::printHelp()
     std::cout << "K - decrease lacunarity\n";
     std::cout << "O - increase octaves\n";
     std::cout << "L - decrease octaves\n";
-    std::cout << "A - toggle animation mode (if animation mode is on, t increases with time, otherwise not)\n\n";
+    std::cout << "A - toggle animation mode (if turned on, t increases with time, otherwise not)\n\n";
 }
 
 void App::printStats()
