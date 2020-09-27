@@ -30,6 +30,7 @@ private:
     GLuint pers_loc;
     GLuint lac_loc;
     GLuint oct_loc;
+    GLuint light_power_loc;
 
     GLuint tex_mode_loc;
     GLuint noise_mode_loc;
@@ -42,11 +43,12 @@ private:
     float lac = 2.f;
     int octaves = 1;
     double time = 0;
+    float light_power = 1.3;
     
     bool tex_mode = true;
-    bool noise_mode = true;
+    bool noise_mode = false;
     bool anim_mode = true;
-    bool lights_on = false;
+    bool lights_on = true;
 
     int vertex_count;
     int index_count;

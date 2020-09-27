@@ -64,6 +64,7 @@ void App::init(const std::string& obj_path,
     pers_loc = glGetUniformLocation(shader, "pers");
     lac_loc = glGetUniformLocation(shader, "lac");
     oct_loc = glGetUniformLocation(shader, "octaves");
+    light_power_loc = glGetUniformLocation(shader, "light_power");
 
     tex_mode_loc = glGetUniformLocation(shader, "textureOn");
     noise_mode_loc = glGetUniformLocation(shader, "noiseOn");
@@ -216,11 +217,18 @@ void App::input()
         if (Window::pressed(GLFW_KEY_F))
             lights_on = !lights_on,
             last_press = 0;
+	   if (Window::pressed(GLFW_KEY_W))
+		  light_power += 0.1f,
+		  last_press = 0;
+	   if (Window::pressed(GLFW_KEY_S))
+		  light_power -= 0.1f,
+		  last_press = 0;
 
         scale = glm::max(scale, 0.f);
         pers = glm::max(pers, 0.f);
         lac = glm::max(lac, 0.f);
         octaves = glm::clamp(octaves, 0, 15);
+	   light_power = glm::max(light_power, 0.f);
 
         if (anim_mode)
             time += 0.01 * delta;
@@ -269,6 +277,7 @@ void App::draw()
     glUniform1f(lac_loc, lac);
     glUniform1f(pers_loc, pers);
     glUniform1i(oct_loc, octaves);
+    glUniform1f(light_power_loc, light_power);
 
     glUniform1i(tex_mode_loc, tex_mode);
     glUniform1i(noise_mode_loc, noise_mode);
@@ -283,26 +292,54 @@ void App::draw()
 
 void App::printHelp()
 {
-    std::cout << "\nPrzegladarka plikow \".obj\" z tekstura (.DDS lub .bmp) i szumem Perlina\n\n";
-    std::cout << "STEROWANIE:\n";
-    std::cout << "Obracanie modelu za pomoca myszki lub strzalek\n";
-    std::cout << "Przyblizanie/oddalanie za pomoca kolka myszki lub Z/X\n";
-    std::cout << "T - tryb tekstury\n";
-    std::cout << "G - tryb szumu Perlina\n";
-    std::cout << "B - tryb mieszany\n";
-    std::cout << "F - przelacz oswietlenie\n\n";
-    std::cout << "KONTROLOWANIE SZUMU PERLINA:\n";
-    std::cout << "Szum Perlina jest obliczany za pomoca wzoru:\n";
-    std::cout << "pnoise(t) = sum(persistance^i * noise(t * scale * lacunarity^i)) from i=0 to octaves-1\n";
-    std::cout << "Y - zwiekszenie scale\n";
-    std::cout << "H - zmniejszenie scale\n";
-    std::cout << "U - zwiekszenie persistance\n";
-    std::cout << "J - zmniejszenie persistance\n";
-    std::cout << "I - zwiekszenie lacunarity\n";
-    std::cout << "K - zmniejszenie lacunarity\n";
-    std::cout << "O - zwiekszenie octaves\n";
-    std::cout << "L - zmniejszenie octaves\n";
-    std::cout << "A - przelacz tryb animacji\n\n";
+    // std::cout << "\nPrzegladarka plikow \".obj\" z tekstura (.DDS lub .bmp) i szumem Perlina\n\n";
+    // std::cout << "STEROWANIE:\n";
+    // std::cout << "Obracanie modelu za pomoca myszki lub strzalek\n";
+    // std::cout << "Przyblizanie/oddalanie za pomoca kolka myszki lub Z/X\n";
+    // std::cout << "T - tryb tekstury\n";
+    // std::cout << "G - tryb szumu Perlina\n";
+    // std::cout << "B - tryb mieszany\n";
+    // std::cout << "F - przelacz oswietlenie\n\n";
+    // std::cout << "KONTROLOWANIE SZUMU PERLINA:\n";
+    // std::cout << "Szum Perlina jest obliczany za pomoca wzoru:\n";
+    // std::cout << "pnoise(t) = sum(persistance^i * noise(t * scale * lacunarity^i)) from i=0 to octaves-1\n";
+    // std::cout << "Y - zwiekszenie scale\n";
+    // std::cout << "H - zmniejszenie scale\n";
+    // std::cout << "U - zwiekszenie persistance\n";
+    // std::cout << "J - zmniejszenie persistance\n";
+    // std::cout << "I - zwiekszenie lacunarity\n";
+    // std::cout << "K - zmniejszenie lacunarity\n";
+    // std::cout << "O - zwiekszenie octaves\n";
+    // std::cout << "L - zmniejszenie octaves\n";
+    // std::cout << "A - przelacz tryb animacji\n\n";
+
+    std::cout << "\nOBJ file browser with texture (format DDS or bmp) and Perlin Noise\n\n";
+    std::cout << "Navigation:\n";
+    std::cout << "Use mouse or arrows to rotate object.\n";
+    std::cout << "Use mouse scroll or Z/X buttons to zoom in/out.\n";
+    std::cout << "T - turn on texture mode (texture is applied to the object)\n";
+    std::cout << "G - turn on Perlin Noise mode\n";
+    std::cout << "B - turn on mixed mode (texture and Perlin Noise are applied together)\n\n";
+    
+    std::cout << "Light navigation:\n";
+    std::cout << "F - toggle lightning\n";
+    std::cout << "W - increase light power\n";
+    std::cout << "S - decrease light power\n\n";
+
+    std::cout << "Perlin Noise is calculated using the formula below:\n";
+    std::cout << "pnoise(t) = sum(persistance^i * noise(t * scale * lacunarity^i)) from i=0 to octaves-1,\n";
+    std::cout << "where noise(x) is the original Perlin Noise\n\n";
+
+    std::cout << "Perlin Noise navigation:\n";
+    std::cout << "Y - increase scale\n";
+    std::cout << "H - decrease scale\n";
+    std::cout << "U - increase persistance\n";
+    std::cout << "J - decrease persistance\n";
+    std::cout << "I - increase lacunarity\n";
+    std::cout << "K - decrease lacunarity\n";
+    std::cout << "O - increase octaves\n";
+    std::cout << "L - decrease octaves\n";
+    std::cout << "A - toggle animation mode (if animation mode is on, t increases with time, otherwise not)\n\n";
 }
 
 void App::printStats()

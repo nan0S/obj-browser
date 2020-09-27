@@ -132,6 +132,7 @@ uniform float scale;
 uniform float pers;
 uniform float lac;
 uniform int octaves;
+uniform float light_power;
 
 uniform bool textureOn;
 uniform bool noiseOn;
@@ -142,7 +143,8 @@ uniform float time;
 void main()
 {    
     vec3 lightColor = vec3(1, 1, 1);
-    float lightPower = 2.;
+    // float lightPower = 1.;
+    float lightPower = light_power;
 
     vec3 diffuseColor = vec3(1);
     if (textureOn)
@@ -153,7 +155,7 @@ void main()
     if (lightsOn)
     {
         vec3 ambientColor = vec3(0.1, 0.1, 0.1) * diffuseColor;
-        vec3 specularColor = vec3(0.3, 0.3, 0.3);
+        vec3 specularColor = vec3(0.2, 0.2, 0.2);
 
         vec3 n = normalize(normal);
         vec3 l = normalize(lightPos - position);
@@ -161,7 +163,7 @@ void main()
 
         vec3 d = normalize(eyePosition - position);
         vec3 e = reflect(-l, n);
-        float spec = pow(max(dot(d, e), 0), 5);
+        float spec = pow(max(dot(d, e), 0), 10);
 
         color = ambientColor + 
                 diffuseColor * lightColor * lightPower * diff +

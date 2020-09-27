@@ -5,7 +5,11 @@ namespace fs = std::filesystem;
 
 void formatError()
 {
-    std::cout << "Blad formatu!\nPoprawny format to: ./main.out \"sciezka do .obj\" \"sciezka do tesktury\"\n";
+    std::cerr << "Format error!\n\n"
+	    		  "Valid format: ./objbrowser PATH_TO_OBJ_FILE PATH_TO_TEXTURE_FILE\n"
+			  "eg.           ./objbrowser ../resources/tank.obj ../resources/tank.DDS\n\n"
+			  "Where PATH_TO_OBJ_FILE is path to the file with 'obj' extension and\n"
+			  "PATH_TO_TEXTURE_FILE is path to the file with either 'dds' or 'bmp' extension.\n";
 }
 
 int main(int argc, char* argv[])
@@ -18,17 +22,17 @@ int main(int argc, char* argv[])
 
     if (!fs::exists(obj_path))
     {
-        std::cout << "Podany plik .obj nie istnieje!\n";
-        return 0;
+	   std::cerr << "Given obj file does not exists!\n";
+        return EXIT_FAILURE;
     }
     if (!fs::exists(tex_path))
     {
-        std::cout << "Podana tekstura nie istnieje!\n";
-        return 0;
+	   std::cerr << "Given texture file does not exists!\n";
+	   return EXIT_FAILURE;
     }
 
     App app;
     app.start(obj_path, tex_path);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
